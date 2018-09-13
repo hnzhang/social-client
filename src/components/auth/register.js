@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 //import { connect } from 'react-redux';
 //import { registerUser } from '../../actions/authActions';
 import TextFieldGroup from '../common/TextFieldGroup';
 
 class Register extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       name: '',
       email: '',
       password: '',
       password2: '',
-      errors: {}
+      errors: {},
     };
 
     this.onChange = this.onChange.bind(this);
@@ -32,7 +33,9 @@ class Register extends Component {
     }
   }
 
+  //to handle input
   onChange(e) {
+    //[e.target.name] will return e.target["name"]
     this.setState({ [e.target.name]: e.target.value });
   }
 
@@ -43,10 +46,17 @@ class Register extends Component {
       name: this.state.name,
       email: this.state.email,
       password: this.state.password,
-      password2: this.state.password2
+      password2: this.state.password2,
     };
+    console.log(newUser);
+    axios.post('/api/users/register', newUser)
+      .then(response=>console.log(response.data))
+      .catch(err=>{
+        console.log(err.response.data);
+        this.setState({errors:err.response.data});
+      });
 
-    this.props.registerUser(newUser, this.props.history);
+    //this.props.registerUser(newUser, this.props.history);
   }
 
   render() {
@@ -62,15 +72,12 @@ class Register extends Component {
                 Create Your Developer Social Network Account
               </p>
               <form noValidate onSubmit={this.onSubmit}>
-                <TextFieldGroup
-                  placeholder="Name"
+                <TextFieldGroup placeholder="Name"
                   name="name"
                   value={this.state.name}
                   onChange={this.onChange}
-                  error={errors.name}
-                />
-                <TextFieldGroup
-                  placeholder="Email"
+                  error={errors.name} />
+                <TextFieldGroup placeholder="Email"
                   name="email"
                   type="email"
                   value={this.state.email}
@@ -78,22 +85,18 @@ class Register extends Component {
                   error={errors.email}
                   info="This site uses Gravatar so if you want a profile image, use a Gravatar email"
                 />
-                <TextFieldGroup
-                  placeholder="Password"
+                <TextFieldGroup placeholder="Password"
                   name="password"
                   type="password"
                   value={this.state.password}
                   onChange={this.onChange}
-                  error={errors.password}
-                />
-                <TextFieldGroup
-                  placeholder="Confirm Password"
+                  error={errors.password} />
+                <TextFieldGroup placeholder="Confirm Password"
                   name="password2"
                   type="password"
                   value={this.state.password2}
                   onChange={this.onChange}
-                  error={errors.password2}
-                />
+                  error={errors.password2} />
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
             </div>
@@ -105,9 +108,9 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-  registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  //registerUser: PropTypes.func.isRequired,
+  //auth: PropTypes.object.isRequired,
+ // errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({

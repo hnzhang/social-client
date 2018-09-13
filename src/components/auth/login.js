@@ -40,8 +40,8 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password
     };
-
-    this.props.loginUser(userData);
+    console.log(userData);
+    //this.props.loginUser(userData);
   }
 
   onChange(e) {
@@ -61,23 +61,19 @@ class Login extends Component {
                 Sign in to Your Developer's Social Network Account
               </p>
               <form onSubmit={this.onSubmit}>
-                <TextFieldGroup
-                  placeholder="Email Address"
+                <TextFieldGroup placeholder="Email Address"
                   name="email"
                   type="email"
                   value={this.state.email}
                   onChange={this.onChange}
-                  error={errors.email}
-                />
+                  error={errors.email} />
 
-                <TextFieldGroup
-                  placeholder="Password"
+                <TextFieldGroup placeholder="Password"
                   name="password"
                   type="password"
                   value={this.state.password}
                   onChange={this.onChange}
-                  error={errors.password}
-                />
+                  error={errors.password} />
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
             </div>
@@ -89,8 +85,8 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  loginUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
+  //loginUser: PropTypes.func.isRequired,
+  //auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
