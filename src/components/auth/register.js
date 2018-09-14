@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
-//import { connect } from 'react-redux';
-//import { registerUser } from '../../actions/authActions';
+
+import { connect } from 'react-redux';//to connect redux to the component
+import { registerUser } from '../../actions/authAction';
 import TextFieldGroup from '../common/TextFieldGroup';
 
 class Register extends Component {
@@ -49,21 +50,24 @@ class Register extends Component {
       password2: this.state.password2,
     };
     console.log(newUser);
+    /*
     axios.post('/api/users/register', newUser)
       .then(response=>console.log(response.data))
       .catch(err=>{
         console.log(err.response.data);
         this.setState({errors:err.response.data});
       });
-
-    //this.props.registerUser(newUser, this.props.history);
+      */
+    this.props.registerUser(newUser, this.props.history);
   }
 
   render() {
     const { errors } = this.state;
+    const user  = this.props.auth.user;
 
     return (
       <div className="register">
+        {user ? user.name : null}
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
@@ -108,9 +112,9 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-  //registerUser: PropTypes.func.isRequired,
-  //auth: PropTypes.object.isRequired,
- // errors: PropTypes.object.isRequired
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -119,4 +123,4 @@ const mapStateToProps = state => ({
 });
 
 //export default connect(mapStateToProps, { registerUser })(withRouter(Register));
-export default Register;
+export default connect(mapStateToProps, {registerUser} )(Register);
